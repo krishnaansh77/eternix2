@@ -1,0 +1,43 @@
+server:
+  port: 8080
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://127.0.0.1:5432/aarogyam}
+    username: ${DATABASE_USERNAME:ayushpatel}
+    password: ${DATABASE_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+  mail:
+    host: ${SMTP_HOST:}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail.smtp.auth: ${SMTP_AUTH:true}
+      mail.smtp.starttls.enable: ${SMTP_STARTTLS:true}
+
+aarogyam:
+  jwt:
+    secret: ${JWT_SECRET:dev-only-change-me-use-a-32+char-secret!!}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+    cookie-secure: ${JWT_COOKIE_SECURE:false}
+  mail:
+    delivery-mode: ${MAIL_DELIVERY_MODE:console}
+    from: ${MAIL_FROM:no-reply@aarogyam.local}
+    verification-url: ${FRONTEND_URL:http://127.0.0.1:3000}/verify-email
+    verification-expiration-minutes: ${VERIFICATION_EXPIRATION_MINUTES:30}
+    max-resends-per-hour: ${VERIFICATION_MAX_RESENDS_PER_HOUR:3}
+  uploads-dir: ${UPLOADS_DIR:./uploads}
+  inference:
+    cbc-url: ${CBC_API_URL:http://127.0.0.1:8000}
+  cors:
+    origins: ${CORS_ORIGINS:http://localhost:3000,http://127.0.0.1:3000}

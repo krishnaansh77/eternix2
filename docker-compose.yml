@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: aarogyam-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: aarogyam
+      POSTGRES_USER: aarogyam
+      POSTGRES_PASSWORD: aarogyam_local_only
+    volumes:
+      - aarogyam-postgres:/var/lib/postgresql/data
+
+volumes:
+  aarogyam-postgres:
