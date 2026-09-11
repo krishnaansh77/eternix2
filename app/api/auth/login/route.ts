@@ -4,7 +4,8 @@ import { pool, type DbUser } from '@/lib/db'
 import { createSession } from '@/lib/session'
 
 export async function POST(request: Request) {
-  let body: { email?: string; password?: string; remember?: boolean }
+  try {
+    let body: { email?: string; password?: string; remember?: boolean }
   try {
     body = await request.json()
   } catch {
@@ -25,9 +26,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: 'Invalid email or password.' }, { status: 401 })
   }
 
-  await createSession({ sub: user.id, email: user.email, role: user.role }, Boolean(body.remember))
+  try {
+    await createSession({ sub: user.id, email: user.email, role: user.role }, Boolean(body.remember))
+  } catch (error) {
+    console.error('[v0] Login session creation failed:', error)
+    return NextResponse.json({ message: 'Unable to create a secure session.' }, { status: 500 })
+  }
 
-  return NextResponse.json({
-    user: { id: user.id, name: user.name, email: user.email, role: user.role },
-  })
+    return NextResponse.json({
+      user: { id: user.id, name: user.name, email: user.email, role: user.role },
+    })
+  } catch (error) {
+    console.error('[v0] Login request failed:', error)
+    return NextResponse.json({ message: 'The login service is temporarily unavailable.' }, { status: 503 })
+  }
 }

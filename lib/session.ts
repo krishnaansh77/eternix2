@@ -21,7 +21,7 @@ export async function createSession(payload: SessionPayload, remember: boolean) 
     .setProtectedHeader({ alg: 'HS256' })
     .setSubject(payload.sub)
     .setIssuedAt()
-    .setExpirationTime(`${maxAge}s`)
+    .setExpirationTime(Math.floor(Date.now() / 1000) + maxAge)
     .sign(secret)
 
   const store = await cookies()
